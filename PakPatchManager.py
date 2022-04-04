@@ -55,10 +55,7 @@ def deactivateMod(activeMods, modName, modsDic):
         # keep track of paths for both the mhr folder and the mods folder for renaming both and keeping both folders consistent
         oldPakFilePathMHR = os.path.join(mhrDir, mhrPaks[i])
         oldPakFilePathPPM = os.path.join(PPMModsDir, str(activeMods[i]), modsDic[activeMods[i]]['pak'])
-        
-        print(mhrPaks[i])
-        print(mhrPakID)
-        
+
         if mhrPakID >= 10:
             pakName = 're_chunk_000.pak.patch_0{}.pak'.format(str(mhrPakID - 1))
         else:
