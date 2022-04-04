@@ -188,23 +188,28 @@ def main():
                     activeMods.append(mods[int(userIn)])
                     numActiveMods += 1
                     activateMod(numActiveMods, mods[int(userIn)], modsDic)
-            dumpModsToJSON(modsDic)
+                dumpModsToJSON(modsDic)
+            else: 
+                print("Please enter a valid action")
         # deactivates all active mods
-        elif (userIn == 'c'):
+        elif (userIn.lower() == 'c'):
             clearActiveMods(activeMods, modsDic)
             activeMods = []
             numActiveMods = 0
             dumpModsToJSON(modsDic)
         # end loop and the program
-        elif (userIn == 'd'):
+        elif (userIn.lower() == 'd'):
             print('Closing')
             done = True
         # re read the mods folder
-        elif (userIn == 'r'):
+        elif (userIn.lower() == 'r'):
             print('re reading mods folder')
             modsDic = readModsFolder(modsDic, modDir)
             mods = os.listdir(modDir)
+        else:
+            print("Please enter a valid action")
         print(delimiter)
+            
 
 if __name__ == "__main__" :
     main()
