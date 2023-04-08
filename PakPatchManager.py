@@ -17,9 +17,9 @@ def activateMod(numActiveMods, modName, modsDic):
     PPMModsDir = os.path.join(currDir, 'mods')
 
     if (numActiveMods >= 10):
-        pakName = 're_chunk_000.pak.patch_0{}.pak'.format(str(numActiveMods - 1))
+        pakName = 're_chunk_000.pak.patch_0{}.pak'.format(str(numActiveMods))
     else:
-        pakName = 're_chunk_000.pak.patch_00{}.pak'.format(str(numActiveMods - 1))
+        pakName = 're_chunk_000.pak.patch_00{}.pak'.format(str(numActiveMods))
     modsDic[modName]['pak'] = pakName
     
     modDir = os.listdir(os.path.join(PPMModsDir, modName))
@@ -47,7 +47,7 @@ def deactivateMod(activeMods, modName, modsDic):
     os.remove(os.path.join(mhrDir, pakFileName))
     
     #rename the paks that follow the removed mod to keep proper sequence names
-    removedPakID = int(pakFileName[23:26])
+    removedPakID = int(pakFileName[23:26]) - 1
     mhrFiles = os.listdir(mhrDir)
     mhrPaks = list(filter(filterPakPatch, mhrFiles))
     for i in range(removedPakID, len(mhrPaks)):
@@ -80,6 +80,10 @@ def clearActiveMods(activeMods, modsDic):
     mhrDirFiles = os.listdir(mhrDir)
     mhrPaks = list(filter(filterPakPatch, mhrDirFiles))
 
+    # remove the default pak so it is not deleted from the directory
+    mhrPaks.pop(0)
+    activeMods.pop(0)
+    
     # remove all pak patch files from the mhr folder
     for pak in mhrPaks:
         os.remove(os.path.join(mhrDir, pak))
@@ -137,7 +141,8 @@ def loadModsFromJSON():
 
 # function that returns number of active mods
 def findActiveMods(modsDic):
-    activeMods = []
+    # add default pak after Capcom added a required pak patch file
+    activeMods = ['MHRDefaultPak']
     for mod in modsDic:
         if modsDic[mod]['active']:
             activeMods.append(mod)
@@ -191,7 +196,7 @@ def main():
         # deactivates all active mods
         elif (userIn.lower() == 'c'):
             clearActiveMods(activeMods, modsDic)
-            activeMods = []
+            activeMods = ['MHRDefaultPak']
             numActiveMods = 0
             dumpModsToJSON(modsDic)
         # end loop and the program
